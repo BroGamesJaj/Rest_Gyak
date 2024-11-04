@@ -23,6 +23,7 @@ export class BooksController {
   }
 
   @Patch(':id')
+  @HttpCode(200)
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
     return this.booksService.update(+id, updateBookDto);
   }
