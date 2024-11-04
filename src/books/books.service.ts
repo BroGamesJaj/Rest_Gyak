@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable,NotFoundException  } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import UpdateBookDto from './dto/update-book.dto';
 import { Book } from './book.model';
@@ -21,6 +21,9 @@ export class BooksService {
   }
 
   findOne(id: number) {
+    if (!this.books.find(book => book.id === id)) {
+      throw new NotFoundException(`Book with id ${id} not found`);
+    }
     return this.books.find(book => book.id === id);
   }
 
@@ -34,6 +37,9 @@ export class BooksService {
   }
 
   remove(id: number) {
+    if (this.books.findIndex(book => book.id === id) === -1) {
+      throw new NotFoundException(`Book with id ${id} not found`);
+    }
     this.books.splice(this.books.indexOf(this.books.find(book => book.id === id)),1)
     return "204 No Content";
   }
